@@ -1,0 +1,67 @@
+# =========================
+# Dependências (Node)
+# =========================
+node_modules/
+
+# pnpm store local (se existir)
+.pnpm-store/
+
+# =========================
+# Builds / artefatos gerados
+# =========================
+dist/
+build/
+.next/
+out/
+.vite/
+
+# =========================
+# Arquivos de ambiente (.env)
+# =========================
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =========================
+# Testes e coverage
+# =========================
+coverage/
+.jest/
+*.lcov
+
+# =========================
+# Cache de ferramentas
+# =========================
+*.tsbuildinfo
+.cache/
+.tmp/
+.eslintcache
+
+# =========================
+# Prisma
+# =========================
+prisma/*.db-journal
+
+# =========================
+# Sistema operacional
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
