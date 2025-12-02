@@ -35,7 +35,7 @@ export class AuthService {
     };
 
     const token = jwt.sign(payload, JWT_SECRET, {
-      expiresIn: "1H",
+      expiresIn: "1h",
     });
 
     return {

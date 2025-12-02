@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { authRoutes } from "../modules/auth/auth.routes";
+import { jokesRoutes } from "../modules/jokes/jokes.routes";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/jokes", jokesRoutes);
 
 export { app };
