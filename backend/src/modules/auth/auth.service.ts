@@ -1,6 +1,5 @@
 import { prisma } from "../../db/prisma";
 import jwt from "jsonwebtoken";
-
 import bcrypt from "bcryptjs";
 import { LoginRequestDTO, LoginResponseDTO } from "./auth.types";
 import { env } from "../../config/env";
@@ -14,7 +13,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error("Credencias inválidas");
+      throw new Error("Credenciais inválidas");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
