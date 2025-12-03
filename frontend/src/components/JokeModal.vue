@@ -1,35 +1,57 @@
 <template>
-  <div class="backdrop">
-    <div class="modal">
-      <h2>Piada Geek 😏</h2>
-      <p class="joke">{{ joke }}</p>
+  <v-dialog :model-value="true" persistent max-width="520">
+    <v-card>
+      <v-card-title class="d-flex align-center justify-space-between">
+        <span>Piada Geek 😏</span>
+        <v-chip size="small" color="secondary" label class="text-white">
+          Humor: {{ moodLevel }}/3
+        </v-chip>
+      </v-card-title>
 
-      <p class="mood">Nível de felicidade: {{ moodLevel }}/3</p>
+      <v-card-text>
+        <p class="joke-text">
+          {{ joke }}
+        </p>
 
-      <div class="actions">
-        <button type="button" @click="$emit('another')" :disabled="loadingMore">
-          {{ loadingMore ? "Carregando..." : "Mais uma piada" }}
-        </button>
+        <div class="mt-4">
+          <v-progress-linear
+            :model-value="moodProgress"
+            color="primary"
+            height="8"
+            rounded
+          />
+          <p class="progress-hint">
+            {{ progressLabel }}
+          </p>
+        </div>
 
-        <button
-          type="button"
-          @click="$emit('close')"
-          :disabled="!canClose"
-          class="close-btn"
+        <p v-if="!canClose" class="hint">
+          A tela ainda não está totalmente feliz com a vida… leia mais uma
+          piada. 😌
+        </p>
+      </v-card-text>
+
+      <v-card-actions class="justify-end">
+        <v-btn
+          variant="outlined"
+          @click="$emit('another')"
+          :loading="loadingMore"
         >
-          Fechar
-        </button>
-      </div>
+          Mais uma piada
+        </v-btn>
 
-      <p v-if="!canClose" class="hint">
-        A tela só vai ficar realmente feliz depois de algumas boas risadas… 😌
-      </p>
-    </div>
-  </div>
+        <v-btn color="primary" @click="$emit('close')" :disabled="!canClose">
+          Fechar
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from "vue";
+
+const props = defineProps<{
   joke: string;
   moodLevel: number;
   canClose: boolean;
@@ -40,61 +62,35 @@ defineEmits<{
   (e: "another"): void;
   (e: "close"): void;
 }>();
+
+const moodProgress = computed(() => {
+  const max = 3;
+  const clamped = Math.max(0, Math.min(props.moodLevel, max));
+  return (clamped / max) * 100;
+});
+
+const progressLabel = computed(() => {
+  if (props.moodLevel <= 1) return "Ainda em modo poker-face…";
+  if (props.moodLevel === 2) return "Tá melhorando, continue! 😄";
+  return "Agora sim, liberado pra ser feliz! ✨";
+});
 </script>
 
 <style scoped>
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.joke-text {
+  font-size: 0.98rem;
+  line-height: 1.4rem;
 }
-.modal {
-  background: #020617;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  max-width: 500px;
-  width: 90%;
-  color: #e5e7eb;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+
+.progress-hint {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
-.joke {
-  margin: 1rem 0;
-}
-.mood {
-  font-size: 0.9rem;
-  color: #a5b4fc;
-}
-.actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-button {
-  flex: 1;
-  padding: 0.6rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-}
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.close-btn {
-  background: #22c55e;
-  color: #022c22;
-}
-button:not(.close-btn) {
-  background: #4b5563;
-  color: #e5e7eb;
-}
+
 .hint {
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: #f97373;
 }
 </style>

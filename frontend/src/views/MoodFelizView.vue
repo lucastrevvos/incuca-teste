@@ -1,7 +1,7 @@
 <template>
   <div class="mood-screen happy">
     <div class="content">
-      <h1>:D</h1>
+      <h1 class="face">:D</h1>
       <p class="title">Agora sim, 100% feliz com a vida!</p>
 
       <p class="subtitle">
@@ -37,6 +37,8 @@ const restartCycle = () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  transition: background 0.5s ease;
 }
 .happy {
   background: radial-gradient(circle at top, #22c55e, #16a34a);
@@ -78,5 +80,26 @@ button:hover {
 .hint {
   font-size: 0.85rem;
   opacity: 0.9;
+}
+
+.face {
+  font-size: 6rem;
+  margin-bottom: 0.5rem;
+  animation: happyBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes happyBounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px) scale(1.05);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-4px);
+  }
 }
 </style>

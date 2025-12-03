@@ -1,10 +1,5 @@
 <template>
   <div class="mood-screen poker">
-    <div class="content">
-      <h1>😐</h1>
-      <p>Lendo piadas para ver se a vida faz sentido...</p>
-    </div>
-
     <JokeModal
       v-if="showModal"
       :joke="currentJoke"
@@ -20,8 +15,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import JokeModal from "../components/JokeModal.vue";
+
+import { api } from "../services/api";
 
 const router = useRouter();
 
@@ -30,17 +26,13 @@ const moodLevel = ref(1);
 const loading = ref(false);
 const showModal = ref(true);
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3333";
-
 const canClose = computed(() => moodLevel.value >= 3);
 
 async function fetchJoke() {
   loading.value = true;
   try {
-    const response = await axios.get<{ joke: string }>(
-      `${API_BASE_URL}/jokes/random`,
-    );
+    const response = await api.get<{ joke: string }>("/jokes/random");
+
     currentJoke.value = response.data.joke;
   } catch (err) {
     console.error(err);
@@ -59,7 +51,6 @@ async function handleAnotherJoke() {
     moodLevel.value += 1;
   }
 
-  // Quando atinge 3, mudamos a rota para /feliz
   if (moodLevel.value >= 3) {
     router.push({ name: "feliz" });
   }
@@ -68,7 +59,7 @@ async function handleAnotherJoke() {
 function handleClose() {
   if (!canClose.value) return;
   showModal.value = false;
-  // Vai voltar pra indecisão /inicial
+
   router.push({ name: "inicial" });
 }
 
