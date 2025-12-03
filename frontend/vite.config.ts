@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vuetify from "vite-plugin-vuetify";
+import { createHtmlPlugin } from "vite-plugin-html";
+import vueDevTools from "vite-plugin-vue-devtools";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-})
+  plugins: [
+    vue(),
+    vuetify({
+      autoImport: true,
+    }),
+    vueDevTools(),
+    createHtmlPlugin({}),
+  ],
+});

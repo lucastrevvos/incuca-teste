@@ -1,12 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { getEnvOrThrow } from "../utils/env";
-
-const JWT_SECRET = getEnvOrThrow("JWT_SECRET");
-
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET não definido nas variáveis de ambiente");
-}
+import { env } from "../config/env";
 
 interface TokenPayload extends JwtPayload {
   sub: string;
@@ -38,7 +32,7 @@ export function ensureAuthenticated(
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as unknown;
+    const decoded = jwt.verify(token, env.JWT_SECRET) as unknown;
 
     if (
       typeof decoded === "object" &&

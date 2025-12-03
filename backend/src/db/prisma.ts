@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
+import { env } from "../config/env";
 
 const { Pool } = pg;
 
@@ -11,7 +12,7 @@ if (!connectionString) {
   throw new Error("DATABASE_URL não definida no .env");
 }
 
-const pool = new Pool({ connectionString });
+const pool = new Pool({ connectionString: env.DATABASE_URL });
 
 const adapter = new PrismaPg(pool);
 

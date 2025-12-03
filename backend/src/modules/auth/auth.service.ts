@@ -3,13 +3,7 @@ import jwt from "jsonwebtoken";
 
 import bcrypt from "bcryptjs";
 import { LoginRequestDTO, LoginResponseDTO } from "./auth.types";
-import { getEnvOrThrow } from "../../utils/env";
-
-const JWT_SECRET = getEnvOrThrow("JWT_SECRET");
-
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET não definido nas variáveis de ambiente");
-}
+import { env } from "../../config/env";
 
 export class AuthService {
   async login(data: LoginRequestDTO): Promise<LoginResponseDTO> {
@@ -34,7 +28,7 @@ export class AuthService {
       email: user.email,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, {
+    const token = jwt.sign(payload, env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
