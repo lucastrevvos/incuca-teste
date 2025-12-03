@@ -36,4 +36,5 @@ ENV NODE_ENV=production
 EXPOSE 3333
 
 
-CMD ["sh", "-c", "pnpm dlx prisma db push --accept-data-loss && node dist/http/server.js"]
+CMD ["sh", "-c", "pnpm dlx prisma db push --accept-data-loss && pnpm dlx prisma db seed && node dist/http/server.js"]
+
