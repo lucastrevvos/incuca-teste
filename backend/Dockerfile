@@ -19,8 +19,9 @@ WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
+COPY package.json pnpm-lock.yaml ./ 
 
 ENV NODE_ENV=production
 EXPOSE 3333
 
-CMD ["node", "dist/http/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/http/server.js"]
