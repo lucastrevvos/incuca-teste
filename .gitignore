@@ -19,7 +19,7 @@ out/
 # Arquivos de ambiente (.env)
 # =========================
 .env
-.env.*
+
 backend/.env
 frontend/.env
 
