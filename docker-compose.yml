@@ -6,9 +6,9 @@ services:
     container_name: incuca-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: incuca
-      POSTGRES_PASSWORD: incuca
-      POSTGRES_DB: incuca_test
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5433:5432"
     volumes:
@@ -21,11 +21,24 @@ services:
     container_name: incuca-backend
     restart: unless-stopped
     env_file:
-      - ./backend/.env.docker
+      - .env
     ports:
       - "3333:3333"
     depends_on:
       - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: incuca-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
 
 volumes:
   db_data:
